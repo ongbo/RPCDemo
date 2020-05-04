@@ -1,5 +1,6 @@
 package com.ongbo.RPC_2.demo;
 
 public interface IHelloServie {
-    String sayHello(String name);
+    public String sayHello(String name);
+    public String sayInt(String info, Integer port);
 }

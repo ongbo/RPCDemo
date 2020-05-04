@@ -5,4 +5,5 @@ package com.ongbo.RPC_1;
  * */
 public interface IHello {
     public String sayHello(String info);
+    public String sayInt(String info,int port);
 }

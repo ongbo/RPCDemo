@@ -13,10 +13,15 @@ public class RemoteInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //构建一个Rpc传输对象RpcRequest，里面包括了类名，方法名和参数
+        System.out.println("proxy:"+proxy.getClass().getName());
+
+        System.out.println("method:"+method.getName());
+        System.out.println(args[0]);
         RpcRequest rpcRequest = new RpcRequest();
         rpcRequest.setClassName(method.getDeclaringClass().getName());
         rpcRequest.setMethodName(method.getName());
         rpcRequest.setParameters(args);
+        System.out.println(args[0].getClass());
 
         /**将这个Rpc调用对象通过tcp传输过去*/
         TcpTransport tcpTransport = new TcpTransport(host,port);

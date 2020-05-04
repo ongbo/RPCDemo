@@ -8,4 +8,9 @@ public class HelloService implements IHello {
         System.out.println(result);
         return result;
     }
+
+    @Override
+    public String sayInt(String info, int port) {
+        return null;
+    }
 }

@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ProcessHandler implements Runnable {
     private Socket socket;
@@ -16,6 +17,9 @@ public class ProcessHandler implements Runnable {
      * 服务端发布的服务
      * */
     private Object service;
+    /**
+     * 构造方法，顺便保存socket和服务service
+     * */
     public ProcessHandler(Socket socket,Object service){
         this.socket = socket;
         this.service = service;
@@ -64,11 +68,16 @@ public class ProcessHandler implements Runnable {
         System.out.println("服务端开始调用了......");
         System.out.println("调用的为："+rpcRequest.getClassName()+" "+rpcRequest.getMethodName()+" ");
         Object[] parameters = rpcRequest.getParameters();
+        /**
+         * 两种参数类型的选择方式，可以随便选择，第二种要使用jdk1.8以上
+         * */
         Class[] parameterTypes = new Class[parameters.length];
+        Class<?>[] parameTypes = Arrays.stream(parameters).map(Object::getClass).toArray(Class<?>[]::new);
         for(int i=0,length = parameters.length;i<length;i++){
-            parameterTypes[i] = parameters.getClass();
+            parameterTypes[i] = parameters[i].getClass();
             System.out.println(parameterTypes[i].getName());
         }
+//        for(int i=0;i<parameTypes.length;i++) System.out.println(parameTypes[i]);
         /**开始调用方法*/
         Method method = service.getClass().getMethod(rpcRequest.getMethodName(),parameterTypes);
         return method.invoke(service,parameters);
